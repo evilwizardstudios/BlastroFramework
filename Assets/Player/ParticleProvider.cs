@@ -24,7 +24,6 @@ public class ParticleProvider : MonoBehaviour
 
     public void StartDustTrail()
     {
-        Debug.Log("started trail");
         effects[2].Play();
     }
 

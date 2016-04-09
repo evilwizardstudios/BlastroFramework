@@ -16,7 +16,32 @@ namespace Blastro.Movement
 
         public virtual void Update()
         {
+            // collect movement button presses:
+
+            if (Input.GetButtonDown("A"))
+            {
+                A();
+            }
+
+            if (Input.GetButtonDown("X"))
+            {
+                X();
+            }
+
+            if (Input.GetButtonDown("B"))
+            {
+                B();
+            }
         }
+
+        // jump
+        public virtual void A() { }
+
+        // dodge skill
+        public virtual void B() { }
+
+        // movement skill
+        public virtual void X() { }
 
         public virtual void PhysicsUpdate() {}
 

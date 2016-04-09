@@ -27,6 +27,8 @@ namespace Blastro.Movement
         public float WalkSpeed;
         public float JumpPower;
 
+        public float CameraOffset;
+
         public float SlipThreshold;
         public float SlipSpeedModifier;
         public float SlipAngle { get; private set; }
@@ -48,7 +50,6 @@ namespace Blastro.Movement
 
         private void Start()
         {
-
             RB = GetComponent<Rigidbody2D>();
             anim = GetComponent<Animator>();
             sr = GetComponent<SpriteRenderer>();

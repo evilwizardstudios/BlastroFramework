@@ -15,19 +15,19 @@ namespace Blastro.Movement
         {
             base.Update();
 
-            // If we're falling and hugging the wall, transition to wallgrab
+            // If we're airborne and hugging the wall, transition to wallgrab
             if (Controller.IsWallgrabbed)
             {
                 Transition(new WallgrabState(Controller));
                 return;
             }
+        }
 
-            //if we're ever in the air, we can always check to see if we can jump
-            if (Input.GetButtonDown("A") && RemainingJumps > 0)
-            {
-                Controller.ParticleProvider.Jump();
-                Transition(new JumpingState(Controller, RemainingJumps - 1));
-            }
+        public override void A()
+        {
+            if (RemainingJumps <= 0) return;
+
+            Transition(new JumpingState(Controller, RemainingJumps - 1));
         }
 
         public override void PhysicsUpdate()

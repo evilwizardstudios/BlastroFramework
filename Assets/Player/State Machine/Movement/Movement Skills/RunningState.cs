@@ -4,9 +4,15 @@ namespace Blastro.Movement
 {
     public class RunningState : GroundedState, IMovementSkill
     {
-        public RunningState(PlayerController playerController) : base(playerController)
+        public RunningState(PlayerController playerController, PlayerState previousState) : base(playerController)
         {
-            Controller.ParticleProvider.StartDustTrail();
+            if (!(previousState is WalkingState))
+            {
+                Transition(new IdleState(Controller));
+                return;
+            }
+
+           Controller.ParticleProvider.StartDustTrail();
         }
 
         public override void Update()

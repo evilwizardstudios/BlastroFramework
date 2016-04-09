@@ -8,16 +8,8 @@ namespace Blastro.Movement
 
         public override void Update()
         {
-            if (Input.GetButtonDown("X"))
-            {
-                Transition(new RunningState(Controller));
-            }
-
-            if (Input.GetButtonDown("A"))
-            {
-                Transition(new JumpingState(Controller, Controller.Multijump));
-            }
-
+            base.Update();
+            
             if (Controller.IsWallgrabbed)
             {
                 Transition(new WallgrabState(Controller));
@@ -30,5 +22,20 @@ namespace Blastro.Movement
 
         }
 
+        public override void A()
+        {
+            Transition(new JumpingState(Controller, Controller.Multijump));
+        }
+
+        public override void B()
+        {
+            Debug.Log("b pressed");
+            Transition(new RunningState(Controller, this));
+        }
+
+        public override void X()
+        {
+            Debug.Log("x pressed");
+        }
     }
 }
