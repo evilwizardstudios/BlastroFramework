@@ -33,9 +33,24 @@ namespace Blastro.Movement
             Transition(new RunningState(Controller, this));
         }
 
-        public override void X()
+        public override void LT()
         {
-            Debug.Log("x pressed");
+            Transition(new AimingState(Controller));
         }
+    }
+
+    public class AimingState : GroundedState
+    {
+        public AimingState(PlayerController playerController) : base(playerController) {}
+
+        public override void Update()
+        {
+            if (Input.GetAxis("Left Trigger") < 0.4f)
+            {
+                Transition(new IdleState(Controller));
+            }
+        }
+
+        public override void PhysicsUpdate() { }
     }
 }

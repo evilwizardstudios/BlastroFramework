@@ -32,6 +32,16 @@ namespace Blastro.Movement
             {
                 B();
             }
+
+            if (Input.GetAxis("Left Trigger") > 0.4f)
+            {
+                LT();
+            }
+
+            if (Input.GetButtonDown("Left Bumper"))
+            {
+                LB();
+            }
         }
 
         // jump
@@ -40,8 +50,16 @@ namespace Blastro.Movement
         // dodge skill
         public virtual void B() { }
 
-        // movement skill
+        // shoot/attack
         public virtual void X() { }
+
+        // aim
+        public virtual void LT() { }
+
+        // reload
+        public virtual void LB() { }
+
+
 
         public virtual void PhysicsUpdate() {}
 
