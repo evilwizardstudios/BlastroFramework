@@ -47,7 +47,7 @@ namespace Blastro.Shooting
 
             transform.position = Vector3.Lerp(transform.position, 
                 lerpTarget,
-                Time.deltaTime*AimSpeed);
+                playerController.State is AimingState ? Time.deltaTime * playerController.LookSpeed : Time.deltaTime * AimSpeed);
 
             State.Update();
         }

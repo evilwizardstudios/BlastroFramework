@@ -33,6 +33,8 @@ namespace Blastro.Movement
         public float SlipSpeedModifier;
         public float SlipAngle { get; private set; }
 
+        public float LookSpeed;
+
 
         [HideInInspector]
         public bool FacingRight
