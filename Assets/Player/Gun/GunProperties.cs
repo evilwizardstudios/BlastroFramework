@@ -25,7 +25,6 @@ public class GunProperties
     
     // player effects
     public float Recoil;
-    
 }
 
 public enum ProjectileType

@@ -15,6 +15,8 @@ namespace Blastro.Shooting
         public GunState State;
 
         public Bullet Bullet;
+        public ProjectileProperties PProperties;
+        public GameObject DamageText;
 
         private PlayerController playerController;
         private Rigidbody2D playerRB;
@@ -39,6 +41,10 @@ namespace Blastro.Shooting
             State = new GunIdleState(this, MaxAmmo);
 
             IdlePositionX = transform.position.x;
+
+            //this should be done by a gear check
+            PProperties = new ProjectileProperties {LaunchSpeed = 10, Owner = playerController, DirectHitDamage = 1, Gun = this, CritChance = 0.1f, CritDamageModifier = 1.8f};
+            Bullet.Init(PProperties, DamageText);
         }
 
         private void Update()
@@ -102,12 +108,7 @@ namespace Blastro.Shooting
 
         public void Fire()
         {
-            var bulletGO = Bullet.GetPooledInstance<Bullet>();
-            var firingVector = (transform.position - Player.transform.position).normalized;
-
-            bulletGO.transform.localPosition = Player.transform.position;
-            bulletGO.transform.rotation = Quaternion.AngleAxis(Mathf.Atan2(firingVector.y, firingVector.x) * Mathf.Rad2Deg,Vector3.forward);
-            bulletGO.RB.velocity = firingVector * bulletGO.Velocity;
+            Bullet.Fire();
         }
 
 
