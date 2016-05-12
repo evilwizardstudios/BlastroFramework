@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 
 // a gear heirarchy should calculate GunProperties & ProjectileProperties objects
-
+[Serializable]
 public class GunProperties
 {
     public ProjectileProperties Projectile;
@@ -12,10 +13,11 @@ public class GunProperties
     public GameObject ReticleModel;
     
     // aim
+    public bool CanAim;                 //if not, use strafe mechanics TODO
     public float AimSpeed;
     public float ZoomDistance;
-    public float Accuracy;
-    public float AimAccuracyTime; //time in aim to 100% accurate shot
+    public float Spread;
+    public float FocusSpeed;       //time in aim to 100% accurate shot
 
     // ammo
     public int ClipSize;

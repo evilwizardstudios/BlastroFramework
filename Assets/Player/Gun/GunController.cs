@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections;
 using Blastro.Movement;
 using UnityEngine;
 
@@ -11,59 +7,55 @@ namespace Blastro.Shooting
     public class GunController : MonoBehaviour
     {
         public GameObject Player;
+        public GameObject Reticle;
+        private ReticleController rController;
 
         public GunState State;
 
         public Bullet Bullet;
+        public GunProperties GProperties;
         public ProjectileProperties PProperties;
         public GameObject DamageText;
 
         private PlayerController playerController;
-        private Rigidbody2D playerRB;
 
-        public float AimSpeed;
-        public int MaxAmmo;
+        private SpriteRenderer sRenderer;
 
         public bool IsReloading { get; private set; }
-        public float ReloadTime;
 
         public bool IsFireLocked { get; private set; }
-        public float RateOfFire;
 
         public float IdlePositionX;
-
+        
 
         private void Start()
         {
             playerController = Player.GetComponent<PlayerController>();
-            playerRB = Player.GetComponent<Rigidbody2D>();
+            sRenderer = GetComponent<SpriteRenderer>();
+            rController = Reticle.GetComponent<ReticleController>();
 
-            State = new GunIdleState(this, MaxAmmo);
+            GearCheck();
+
+            State = new GunIdleState(this, GProperties.ClipSize);
 
             IdlePositionX = transform.position.x;
 
-            //this should be done by a gear check
-            PProperties = new ProjectileProperties {LaunchSpeed = 10, Owner = playerController, DirectHitDamage = 1, Gun = this, CritChance = 0.1f, CritDamageModifier = 1.8f};
             Bullet.Init(PProperties, DamageText);
+        }
+
+        public void GearCheck()
+        {
+            //TEST METHOD
+            PProperties = new ProjectileProperties { LaunchSpeed = 10, Owner = playerController, DirectHitDamage = 1, Gun = this, CritChance = 0.1f, CritDamageModifier = 1.8f };
+            GProperties = new GunProperties { Spread = 2.5f, AmmoPerShot = 1, ClipSize = 15, RateOfFire = 0.2f, ReloadTime = 1, AimSpeed = 5, FocusSpeed = 0.2f };
+
         }
 
         private void Update()
         {
-            var lerpTarget = GetTarget();
-
-            transform.position = Vector3.Lerp(transform.position, 
-                lerpTarget,
-                playerController.State is AimingState ? Time.deltaTime * playerController.LookSpeed : Time.deltaTime * AimSpeed);
+            AimGunSprite();
 
             State.Update();
-        }
-
-        Vector3 GetTarget()
-        {
-            var facing = playerController.FacingRight ? 1 : -1;
-
-            return new Vector3(Player.transform.position.x + (IdlePositionX*facing), Player.transform.position.y, 0) +
-                   GetAimOffset();
         }
 
         void FixedUpdate()
@@ -71,19 +63,20 @@ namespace Blastro.Shooting
             State.PhysicsUpdate();
         }
 
-        private Vector3 GetAimOffset()
+        void AimGunSprite()
         {
-            // limit shooting at the ground while moving
-            if (!(playerController.State is AimingState) && Mathf.Abs(playerRB.velocity.x) > 0.1f && Input.GetAxis("L-Stick Vertical") < -0.1f)
-                return new Vector3(Input.GetAxis("L-Stick Horizontal"), 0, 0);
+            sRenderer.flipY = Reticle.transform.position.x < transform.position.x;
 
-            return new Vector3(Input.GetAxis("L-Stick Horizontal"), Input.GetAxis("L-Stick Vertical"), 0);
+            Vector3 dir = Reticle.transform.position - transform.position;
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
+
 
         public void Reload()
         {
             IsReloading = true;
-            StartCoroutine(ReloadTimer(ReloadTime));
+            StartCoroutine(ReloadTimer(GProperties.ReloadTime));
         }
 
         IEnumerator ReloadTimer(float seconds)
@@ -97,7 +90,7 @@ namespace Blastro.Shooting
         public void FireDelay()
         {
             IsFireLocked = true;
-            StartCoroutine(Delay(RateOfFire));
+            StartCoroutine(Delay(GProperties.RateOfFire));
         }
 
         IEnumerator Delay(float seconds)
@@ -108,7 +101,8 @@ namespace Blastro.Shooting
 
         public void Fire()
         {
-            Bullet.Fire();
+            Bullet.Fire(GProperties, rController);
+            rController.ResetReticle();
         }
 
 

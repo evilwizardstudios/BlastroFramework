@@ -33,6 +33,9 @@ public class CameraController : MonoBehaviour
         else StandardMode();       
     }
 
+    /// <summary>
+    /// Allows the camera to lerp further from the player position when aiming. Used esp. in sniper weapons.
+    /// </summary>
     private void AimMode()
     {
         LerpTarget = Reticle.transform;
@@ -45,6 +48,9 @@ public class CameraController : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Lerps the camera towards the player position, with a small offset (controller.CameraOffset) for facing.
+    /// </summary>
     private void StandardMode()
     {
         LerpTarget = Player.transform;

@@ -46,6 +46,7 @@ namespace Blastro.Movement
         private Animator anim;
         private SpriteRenderer sr;
         private BoxCollider2D footCollider;
+        private ReticleController reticle;
 
         public bool MovementLocked { get; private set; }
         public bool StateLocked { get; private set; }
@@ -58,6 +59,8 @@ namespace Blastro.Movement
             footCollider = GetComponent<BoxCollider2D>();
 
             ParticleProvider = GetComponentInChildren<ParticleProvider>();
+
+            reticle = GetComponentInChildren<ReticleController>();
 
             State = new IdleState(this);
         }
@@ -79,14 +82,7 @@ namespace Blastro.Movement
             anim.SetBool("IsWallgrabbed", IsWallgrabbed);
             anim.SetBool("IsSlippingState", State is SlippingState);
 
-            if (RB.velocity.x < -0.1f)
-            {
-                sr.flipX = true;
-            }
-            else if (RB.velocity.x > 0.1f)
-            {
-                sr.flipX = false;
-            }
+            sr.flipX = transform.position.x > reticle.transform.position.x;
 
         }
 
