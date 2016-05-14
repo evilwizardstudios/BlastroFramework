@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using Blastro.Shooting;
+using Blastro.UI.Hud;
 
 namespace Blastro.Movement
 {
@@ -8,6 +10,10 @@ namespace Blastro.Movement
     {
         public PlayerState State;
         public IMovementSkill MovementSkill;
+
+        public HudController HUD;
+
+        public GunController Gun;
 
         [HideInInspector] public ParticleProvider ParticleProvider;
         [HideInInspector] public bool IsGrounded;
@@ -61,6 +67,7 @@ namespace Blastro.Movement
             ParticleProvider = GetComponentInChildren<ParticleProvider>();
 
             reticle = GetComponentInChildren<ReticleController>();
+            Gun = GetComponentInChildren<GunController>();
 
             State = new IdleState(this);
         }

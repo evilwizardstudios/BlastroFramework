@@ -59,8 +59,6 @@ namespace Blastro.Movement
         // reload
         public virtual void LB() { }
 
-
-
         public virtual void PhysicsUpdate() {}
 
         protected void Transition(PlayerState nextState)

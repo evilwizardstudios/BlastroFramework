@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Blastro.Movement;
+using Blastro.UI.Hud;
 using UnityEngine;
 
 namespace Blastro.Shooting
@@ -40,15 +41,21 @@ namespace Blastro.Shooting
 
             IdlePositionX = transform.position.x;
 
-            Bullet.Init(PProperties, DamageText);
+            Bullet.Init(PProperties);
+
+            playerController.HUD.SetGunAmmo(GProperties.ClipSize);
+        }
+
+        public void ReticleLock(bool b)
+        {
+            rController.Lock(b);
         }
 
         public void GearCheck()
         {
             //TEST METHOD
-            PProperties = new ProjectileProperties { LaunchSpeed = 10, Owner = playerController, DirectHitDamage = 1, Gun = this, CritChance = 0.1f, CritDamageModifier = 1.8f };
+            PProperties = new ProjectileProperties { LaunchSpeed = 10, Owner = playerController, HitDamageMinimum = 0.5f, HitDamageMaximum = 1.2f, Gun = this, CritChance = 0.1f, CritDamageModifier = 1.8f };
             GProperties = new GunProperties { Spread = 2.5f, AmmoPerShot = 1, ClipSize = 15, RateOfFire = 0.2f, ReloadTime = 1, AimSpeed = 5, FocusSpeed = 0.2f };
-
         }
 
         private void Update()
@@ -85,6 +92,7 @@ namespace Blastro.Shooting
             yield return new WaitForSeconds(seconds);
             Debug.Log("finished reloading!");
             IsReloading = false;
+            playerController.HUD.ReloadAmmo();
         }
 
         public void FireDelay()
@@ -103,6 +111,7 @@ namespace Blastro.Shooting
         {
             Bullet.Fire(GProperties, rController);
             rController.ResetReticle();
+            playerController.HUD.MarkUsedAmmo(GProperties.AmmoPerShot);
         }
 
 

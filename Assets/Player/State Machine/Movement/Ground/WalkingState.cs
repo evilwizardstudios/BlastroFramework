@@ -14,7 +14,6 @@ namespace Blastro.Movement
             if (Mathf.Abs(Input.GetAxis("L-Stick Horizontal")) <= 0.1f)
             {
                 Transition(new IdleState(Controller));
-                return;
             }
 
         }

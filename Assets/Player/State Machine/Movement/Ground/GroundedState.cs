@@ -35,22 +35,10 @@ namespace Blastro.Movement
 
         public override void LT()
         {
-            Transition(new AimingState(Controller));
+            if (Controller.Gun.GProperties.CanAim)
+                Transition(new AimingState(Controller));
+            else 
+                Transition(new StrafingState(Controller));
         }
-    }
-
-    public class AimingState : GroundedState
-    {
-        public AimingState(PlayerController playerController) : base(playerController) {}
-
-        public override void Update()
-        {
-            if (Input.GetAxis("Left Trigger") < 0.4f)
-            {
-                Transition(new IdleState(Controller));
-            }
-        }
-
-        public override void PhysicsUpdate() { }
     }
 }
