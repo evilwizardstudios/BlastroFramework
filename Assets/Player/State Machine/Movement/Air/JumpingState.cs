@@ -7,7 +7,7 @@ namespace Blastro.Movement
         
         public JumpingState(PlayerController playerController, int jumps) : base(playerController, jumps)
         {
-            MoveVertical(Controller.JumpPower, Controller.JumpBonus);
+            MoveVertical(Controller.Properties.JumpPower, Controller.Properties.JumpBonus);
         }
 
         public override void Update()

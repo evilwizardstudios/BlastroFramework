@@ -4,5 +4,6 @@
     {
         void Update();
         void PhysicsUpdate();
+        PlayerState GetNew();
     }
 }

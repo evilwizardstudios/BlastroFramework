@@ -28,7 +28,7 @@ namespace Blastro.Movement
             if (Input.GetButtonDown("A"))
             {
                 Controller.ParticleProvider.EndDustTrail();
-                Transition(new JumpingState(Controller, Controller.Multijump));
+                Transition(new JumpingState(Controller, Controller.Properties.Multijump));
             }
 
             if (Mathf.Abs(Input.GetAxis("L-Stick Horizontal")) < 0.4f)
@@ -40,19 +40,24 @@ namespace Blastro.Movement
             if (Mathf.Abs(RB.velocity.x) < 0.1f)
             {
                 Controller.ParticleProvider.EndDustTrail();
-                Transition(new FallingState(Controller, Controller.Multijump));
+                Transition(new FallingState(Controller, Controller.Properties.Multijump));
             }
 
             if (!Controller.IsGrounded)
             {
                 Controller.ParticleProvider.EndDustTrail();
-                Transition(new FallingState(Controller, Controller.Multijump));
+                Transition(new FallingState(Controller, Controller.Properties.Multijump));
             }
         }
 
         public override void PhysicsUpdate()
         {
-            MoveHorizontal(Controller.RunSpeed);
+            MoveHorizontal(Controller.Properties.RunSpeed);
+        }
+
+        public PlayerState GetNew()
+        {
+            return new RunningState(Controller, Controller.State);
         }
 
     }

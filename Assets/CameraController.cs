@@ -54,7 +54,7 @@ public class CameraController : MonoBehaviour
     private void StandardMode()
     {
         LerpTarget = Player.transform;
-        lookOffset = controller.FacingRight ? controller.CameraOffset : -controller.CameraOffset;
+        lookOffset = controller.FacingRight ? controller.Properties.CameraOffset : -controller.Properties.CameraOffset;
 
         transform.position = new Vector3(
             Mathf.Lerp(transform.position.x, LerpTarget.position.x + lookOffset, CameraXSpeed*Time.deltaTime),

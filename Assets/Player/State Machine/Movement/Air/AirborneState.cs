@@ -30,10 +30,15 @@ namespace Blastro.Movement
             Transition(new JumpingState(Controller, RemainingJumps - 1));
         }
 
+        public override void B()
+        {
+            Transition(Controller.MovementSkill());
+        }
+
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
-            MoveHorizontal(Controller.WalkSpeed);
+            MoveHorizontal(Controller.Properties.WalkSpeed);
         }
 
     }

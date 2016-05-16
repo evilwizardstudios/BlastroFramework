@@ -14,6 +14,9 @@ namespace Blastro.Shooting
         public GunState State;
 
         public Bullet Bullet;
+        public Casing Casing;
+        public MuzzleFlash Flash;
+
         public GunProperties GProperties;
         public ProjectileProperties PProperties;
         public GameObject DamageText;
@@ -55,7 +58,7 @@ namespace Blastro.Shooting
         {
             //TEST METHOD
             PProperties = new ProjectileProperties { LaunchSpeed = 10, Owner = playerController, HitDamageMinimum = 0.5f, HitDamageMaximum = 1.2f, Gun = this, CritChance = 0.1f, CritDamageModifier = 1.8f };
-            GProperties = new GunProperties { Spread = 2.5f, AmmoPerShot = 1, ClipSize = 15, RateOfFire = 0.2f, ReloadTime = 1, AimSpeed = 5, FocusSpeed = 0.2f };
+            GProperties = new GunProperties { CanAim = true, Spread = 2.5f, AmmoPerShot = 1, ClipSize = 15, RateOfFire = 0.2f, ReloadTime = 1, AimSpeed = 5, FocusSpeed = 0.2f };
         }
 
         private void Update()
@@ -109,7 +112,9 @@ namespace Blastro.Shooting
 
         public void Fire()
         {
-            Bullet.Fire(GProperties, rController);
+            Flash.Flash();
+            Bullet.Fire(GProperties, Flash.transform.position, rController);
+            Casing.DropCasing(transform.position);
             rController.ResetReticle();
             playerController.HUD.MarkUsedAmmo(GProperties.AmmoPerShot);
         }

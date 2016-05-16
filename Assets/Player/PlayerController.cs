@@ -9,7 +9,6 @@ namespace Blastro.Movement
     public class PlayerController : MonoBehaviour
     {
         public PlayerState State;
-        public IMovementSkill MovementSkill;
 
         public HudController HUD;
 
@@ -25,22 +24,7 @@ namespace Blastro.Movement
         [SerializeField] public float MovementDecayRate;
         [SerializeField] public float WallDecayRate;
 
-        public int Multijump;
-
-        public float JumpBonus;
-
-        public float RunSpeed;
-        public float WalkSpeed;
-        public float JumpPower;
-
-        public float CameraOffset;
-
-        public float SlipThreshold;
-        public float SlipSpeedModifier;
-        public float SlipAngle { get; private set; }
-
-        public float LookSpeed;
-
+        public PlayerProperties Properties;
 
         [HideInInspector]
         public bool FacingRight
@@ -53,6 +37,8 @@ namespace Blastro.Movement
         private SpriteRenderer sr;
         private BoxCollider2D footCollider;
         private ReticleController reticle;
+
+        public float SlipAngle { get; private set; }
 
         public bool MovementLocked { get; private set; }
         public bool StateLocked { get; private set; }
@@ -70,6 +56,10 @@ namespace Blastro.Movement
             Gun = GetComponentInChildren<GunController>();
 
             State = new IdleState(this);
+
+            Properties = new PlayerProperties { Multijump = 1, JumpBonus = 1, RunSpeed = 4,
+                WalkSpeed = 2, JumpPower = 4, CameraOffset = 1, SlipThreshold = 40, SlipSpeedModifier = 1000,
+                LookSpeed = 5, MovementSkill = new DodgingState(this)};
         }
 
         private void Update()
@@ -141,6 +131,11 @@ namespace Blastro.Movement
             StateLocked = true;
             yield return new WaitForSeconds(seconds);
             StateLocked = false;
+        }
+
+        public PlayerState MovementSkill()
+        {
+            return Properties.MovementSkill.GetNew();
         }
     }
 }

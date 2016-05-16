@@ -15,7 +15,7 @@ namespace Blastro.Movement
                 Transition(new WallgrabState(Controller));
             }
 
-            if (Mathf.Abs(Controller.SlipAngle) > Controller.SlipThreshold)
+            if (Mathf.Abs(Controller.SlipAngle) > Controller.Properties.SlipThreshold)
             {
                 Transition(new SlippingState(Controller));
             }
@@ -24,13 +24,12 @@ namespace Blastro.Movement
 
         public override void A()
         {
-            Transition(new JumpingState(Controller, Controller.Multijump));
+            Transition(new JumpingState(Controller, Controller.Properties.Multijump));
         }
 
         public override void B()
         {
-            Debug.Log("b pressed");
-            Transition(new RunningState(Controller, this));
+            Transition(Controller.MovementSkill());
         }
 
         public override void LT()

@@ -23,7 +23,7 @@ namespace Blastro.Movement
             // If we slip/fall/lose a platform, fall
             if (!Controller.IsGrounded)
             {
-                Transition(new FallingState(Controller, Controller.Multijump));
+                Transition(new FallingState(Controller, Controller.Properties.Multijump));
                 return;
             }
         }

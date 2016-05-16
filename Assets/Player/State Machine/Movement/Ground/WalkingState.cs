@@ -20,7 +20,7 @@ namespace Blastro.Movement
 
         public override void PhysicsUpdate()
         {
-            MoveHorizontal(Controller.WalkSpeed);
+            MoveHorizontal(Controller.Properties.WalkSpeed);
         }
     }
 }

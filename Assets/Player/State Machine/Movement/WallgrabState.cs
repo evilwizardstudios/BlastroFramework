@@ -15,7 +15,7 @@ namespace Blastro.Movement
             if (Input.GetButtonDown("A"))
             {
                 Controller.ParticleProvider.EndDustTrail();
-                Transition(new WallJumpingState(Controller, Controller.Multijump));
+                Transition(new WallJumpingState(Controller, Controller.Properties.Multijump));
             }
 
             //if we hit the ground or lose the wall, go back to idle (let it handle falling etc)
